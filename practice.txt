@@ -1,0 +1,6 @@
+GitHub Practice Workflow
+
+This file was created as part of a GitHub workflow practice lab.
+
+The workflow is:
+Issue → Feature Branch → Pull Request → Review → Squash Merge
