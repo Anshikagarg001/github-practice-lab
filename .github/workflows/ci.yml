@@ -7,6 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      APP_ENV: practice
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,3 +24,18 @@ jobs:
             echo "Secret is not available."
             exit 1
           fi
+
+      - name: Check job variable
+        run: echo "Running in $APP_ENV environment"
+
+
+      - name: Create build file
+        run: |
+          mkdir build
+          echo "GitHub Actions build completed successfully." > build/build.txt
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: practice-build
+          path: build/
