@@ -1,0 +1,47 @@
+name: Azure OIDC Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure Login using OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create Resource Group
+        run: |
+          az group create \
+            --name github-oidc-lab-rg \
+            --location eastus
+
+      - name: Create Storage Account
+        run: |
+          STORAGE_NAME="ghoidc${{ github.run_id }}"
+          
+          az storage account create \
+            --name "$STORAGE_NAME" \
+            --resource-group github-oidc-lab-rg \
+            --location eastus \
+            --sku Standard_LRS
+
+      - name: Show Deployment Result
+        run: |
+          echo "Resource Group:"
+          az group show --name github-oidc-lab-rg --query name -o tsv
+
+          echo "Storage Account:"
+          az storage account list \
+            --resource-group github-oidc-lab-rg \
+            --query "[].name" \
+            -o tsv
