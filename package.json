@@ -1,0 +1,8 @@
+{
+  "name": "github-security-lab",
+  "version": "1.0.0",
+  "description": "Practice repository for GitHub security features",
+  "dependencies": {
+    "lodash": "4.17.15"
+  }
+}
